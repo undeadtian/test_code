@@ -1,0 +1,9 @@
+2020-12-17 15:06:14,261 - root - INFO - 建立ssh连接，主机：172.18.10.77，端口：22, 账号：broadxt， 密码：broadxt333
+2020-12-17 15:06:14,278 - paramiko.transport - INFO - Connected (version 2.0, client OpenSSH_7.2p2)
+2020-12-17 15:06:14,340 - paramiko.transport - INFO - Authentication (password) successful!
+2020-12-17 15:06:14,456 - root - WARNING - 连接172.18.10.77成功
+2020-12-17 15:06:14,456 - root - INFO - 建立ssh连接，主机：172.16.5.163，端口：22, 账号：broadxt， 密码：broadxt333
+2020-12-17 15:06:35,458 - root - WARNING - 连接172.16.5.163失败，进行重试
+2020-12-17 15:06:56,462 - root - WARNING - 连接172.16.5.163失败，进行重试
+2020-12-17 15:07:17,466 - root - WARNING - 连接172.16.5.163失败，进行重试
+2020-12-17 15:07:38,471 - root - WARNING - 重试3次失败，结束程序

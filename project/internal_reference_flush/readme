@@ -1,0 +1,13 @@
+本脚本实现：
+1、根据输入的相机编号（参考http://172.16.3.2:8090/pages/viewpage.action?pageId=6455589）
+去X86服务器（172.18.10.77 可以在配置文件config.ini中修改）的/home/broadxt/camera_toolbox目录下找到对应文件夹
+找不到文件夹则返回失败
+2、判断文件下下是否存在json格式的文件。如果不存在json文件或者多个json文件，返回失败
+3、将json文件下载到本地json目录下，命名为‘相机编号,json’
+4、对json文件进行处理转换，按照指定格式（参照demo.txt）转化为txt文件，命名为‘相机编号,txt’
+5、连接arm服务器（172.16.5.163可以在配置文件config.ini中修改）
+6、将处理之后的‘相机编号,txt’文件上传到arm服务器下的/share/camera_flash_isp_user/ 目录
+7、运行write程序 （./write v1 相机编号,txt）程序目前写死了v1口，重定向输出为write_tmp.txt
+8、运行read程序（./read v1）程序目前写死了v1口，重定向输出为read_tmp.txt
+9、下载write_tmp.txt，read_tmp.txt文件 与本地的 相机编号,txt文件进行三者对比，看是否完全一致，完全一致则认为下刷成功
+
