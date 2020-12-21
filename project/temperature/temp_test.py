@@ -134,7 +134,7 @@ class DrsuSSHConnectionTemp(DrsuSSHConnection):
             cpu_arr.append(cpu_temp)
             gpu_arr.append(gpu_temp)
             self.write_xl(index + 1, col, cpu_temp)
-            self.write_xl(index + 1, col + 1, cpu_temp)
+            self.write_xl(index + 1, col + 1, gpu_temp)
             time.sleep(60)
             index += 1
             if max_number == index:

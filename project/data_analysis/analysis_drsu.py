@@ -97,7 +97,8 @@ class DrsuScene(object):
                 try:
                     self.num_df.loc[j, v] += 1
                 except:
-                    print(1)
+                    # 暂时不统计新增障碍物类型
+                    pass
         self.num_df['Col_sum'] = self.num_df.apply(lambda x: x.sum(), axis=1)
         self.num_df.loc['Row_sum'] = self.num_df.apply(lambda x: x.sum())
         save_name = os.path.join(self.data_path, self.rq + 'obj_time.csv')
@@ -426,6 +427,8 @@ class DrsuScene(object):
         # title = ''.join(self.data_path.split('\\')[-1])
         label_x = ['unknown', 'movable', 'unmovable', 'pedestrian', 'bicycle', 'vehicle', 'car', 'truck', 'bus',
                    'tricycle', 'block', 'cone_barrel', 'all']
+        label_x = ['0', '1', '2', '3', '4', '5', '6', '7', '8',
+                   '9', '10', '11', '12']
         image_name = os.path.join(self.data_path, self.rq + 'track.png')
         list_title = ['总障碍物识别图']
         df = []
@@ -438,9 +441,11 @@ class DrsuScene(object):
                 if j not in draw_arr and df[index].loc['Row_sum'][j] >= 200:
                     draw_arr.append(j)
                     list_title.append('{}类型障碍物识别图'.format(label_x[j]))
+                if len(list_title) == 9:
+                    logger.warning('图片数量超过9')
+                    break
             index += 1
-        if len(list_title) > 9:
-            logger.warning('图片数量超过9')
+
         start_time = min(df[i].index[0] for i in range(len(df)))
         index = 0
         for i in df:
@@ -523,22 +528,21 @@ def coordinate_system_transformation(dfx, dfy, v_flag=False):
 
 
 if __name__ == '__main__':
-    # drsu_file = r'D:\data\drsu03场景\group2\group2_position10'
-    # drsu_file = r'D:\data\drsu_staright\group1\speed20_uniform_04'
-    # drsu_file = r'D:\data\drsu_data\2\04'
-    # drsu_file1 = r'D:\data\drsu_data\2\10'
-    # drsu_file = r'D:\data\data_straight\2\20kmh_由远到近_04'
-    drsu_file = r'D:\data\mukesong\static\normal\01'
-    # drsu_file = r'D:\data\data_straight\1\20kmh_由近到远_03'
-    drsu_file1 = r'D:\data\mukesong\static\test\1\01'
-    drsu_file2 = r'D:\data\mukesong\data\1\01'
-    # drsu_file2 = r'D:\data\drsu03场景\group1\group1_position01'
-    a = DrsuScene(drsu_file)
-    a.find_main_track_id()
-    a.check_main_track_id()
-    b = DrsuScene(drsu_file1)
-    b.find_main_track_id()
-    b.check_main_track_id()
-    a=a+b
-    # b = a.merge_track_static()
-    a.draw_track_num_info()
+
+    file_path1 = r'D:\data\mukesong\1218\data\1'
+    cat_paths1 = [files for files in glob(file_path1 + "/*") if os.path.isdir(files)]
+    file_path2 = r'D:\data\mukesong\1218\data_raw\1'
+    cat_paths2 = [files for files in glob(file_path2 + "/*") if os.path.isdir(files)]
+    # print(len(cat_paths1), len(cat_paths2))
+    assert (len(cat_paths1) == len(cat_paths2))
+    for index in range(len(cat_paths1)):
+        a = DrsuScene(cat_paths1[index])
+        a.find_main_track_id()
+        a.check_main_track_id()
+        b = DrsuScene(cat_paths2[index])
+        b.find_main_track_id()
+        b.check_main_track_id()
+        a=a+b
+        # b = a.merge_track_static()
+        a.draw_track_num_info()
+        a.draw()

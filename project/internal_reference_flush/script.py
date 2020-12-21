@@ -143,7 +143,6 @@ class SSHConnectionARM(BaseCommand):
     def get_remote_file(self):
         command = "ls /share/camera_flash_isp_user | grep -E 'read_tmp|write_tmp'"
         remote_file = self.exec_command_retstr(command).split()
-        print(remote_file)
         return remote_file
 
     def download_special_file(self, ):
@@ -183,8 +182,8 @@ class SSHConnectionARM(BaseCommand):
         self.send_command(command2)
 
     def check_flush(self):
-        write_file = 'write_tmp.txt'
-        read_file = 'read_tmp.txt'
+        read_file = os.path.join('data', 'read_tmp_{}.txt'.format(self.senior_no))
+        write_file = os.path.join('data', 'write_tmp_{}.txt'.format(self.senior_no))
         txt_file = r'json\{}.txt'.format(self.senior_no)
         fp1 = open(write_file, 'rb')
         fp2 = open(read_file, 'rb')
@@ -273,7 +272,7 @@ class FileParse(object):
             line = demo.readline()
             while line:
                 print(line)
-                pattern = re.compile(r'([a-z]+[0-9]+)[:]\s[-]?([0-9]+\.[0-9]+)')
+                pattern = re.compile(r'([a-z]+[0-9]*)[:]\s[-]?([0-9]+\.[0-9]+)')
                 line_data = pattern.search(line)
                 if line_data:
                     write_line = '  {}: {}\n'.format(line_data.groups()[0],
@@ -351,5 +350,5 @@ def reference_flush(senior_no):
 
 
 if __name__ == '__main__':
-    senior_no = [606]
+    senior_no = [643]
     reference_flush(senior_no)
