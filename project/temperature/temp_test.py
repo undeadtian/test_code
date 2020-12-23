@@ -155,7 +155,8 @@ def temperature_test(drsu_id):
         time.sleep(100)
         if not drsuconn.is_drsu_ready():
             logger.error('drsu启动不成功')
-    command = 'tail -F /dr/drsu_16388/DR_APP/log.txt >&2'
+    # 'tail -f /dr/drsu_16388/DR_APP/log.txt | grep -aE "ulAidataNO|ai_recv"'
+    command = 'tail -F /dr/drsu_16388/DR_APP/log.txt | grep -aE "ulAidataNO|ai_recv" >&2'
     time_diff = [60000, 60000, 44000, 60000]
     time_dev = [50, 50, 1000,  50]
     max_number = 1000
